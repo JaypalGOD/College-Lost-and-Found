@@ -1,0 +1,370 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 240 33% 99%;
+    --foreground: 240 32% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 32% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 32% 11%;
+    --primary: 243 75% 58%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 240 30% 96%;
+    --secondary-foreground: 240 32% 14%;
+    --muted: 240 25% 96%;
+    --muted-foreground: 240 9% 40%;
+    --accent: 243 90% 96%;
+    --accent-foreground: 243 55% 38%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 240 20% 90%;
+    --input: 240 18% 87%;
+    --ring: 243 75% 58%;
+    --radius: 1rem;
+
+    /* Status tokens — always paired with an icon + label, never color alone */
+    --lost: 14 84% 48%;
+    --lost-soft: 18 100% 95%;
+    --lost-foreground: 14 80% 32%;
+    --found: 160 72% 32%;
+    --found-soft: 150 60% 93%;
+    --found-foreground: 162 76% 22%;
+    --lime: 82 78% 55%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-feature-settings: "ss01", "cv11";
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-display tracking-tight;
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+
+  ::selection {
+    background: hsl(var(--primary) / 0.18);
+  }
+}
+
+@layer components {
+  /* Subtle page backdrop: soft grid + gradient wash */
+  .bg-campus-grid {
+    background-image:
+      linear-gradient(to right, hsl(var(--border) / 0.55) 1px, transparent 1px),
+      linear-gradient(to bottom, hsl(var(--border) / 0.55) 1px, transparent 1px);
+    background-size: 44px 44px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 100%);
+  }
+
+  .glass {
+    @apply border border-white/60 bg-white/70 backdrop-blur-xl;
+  }
+
+  .eyebrow {
+    @apply inline-flex items-center gap-2 rounded-full border border-primary/15 bg-accent px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-accent-foreground;
+  }
+
+  .section-title {
+    @apply font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-[2.75rem] lg:leading-[1.1];
+  }
+
+  /* Scroll reveal — toggled by useInView */
+  .reveal {
+    opacity: 0;
+    transform: translate3d(0, 18px, 0);
+    transition:
+      opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+  .reveal[data-visible="true"] {
+    opacity: 1;
+    transform: none;
+  }
+
+  .campus-scene[data-paused="true"] * {
+    animation-play-state: paused !important;
+  }
+
+  .page-enter {
+    animation: page-enter 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .text-pretty {
+    text-wrap: pretty;
+  }
+  .anim-float {
+    animation: float 6s ease-in-out infinite;
+    animation-delay: var(--delay, 0s);
+  }
+  .anim-float-slow {
+    animation: float 9s ease-in-out infinite;
+    animation-delay: var(--delay, 0s);
+  }
+  .anim-drift {
+    animation: drift var(--dur, 40s) linear infinite;
+    animation-delay: var(--delay, 0s);
+  }
+  .anim-sway {
+    transform-box: fill-box;
+    transform-origin: 50% 100%;
+    animation: sway 5s ease-in-out infinite;
+    animation-delay: var(--delay, 0s);
+  }
+  .anim-bob {
+    animation: bob 3.2s ease-in-out infinite;
+  }
+  .anim-scan {
+    animation: scan 11s ease-in-out infinite;
+  }
+  .anim-pin {
+    transform-box: fill-box;
+    transform-origin: 50% 100%;
+    animation: pin 2.8s cubic-bezier(0.34, 1.3, 0.64, 1) infinite;
+    animation-delay: var(--delay, 0s);
+  }
+  .anim-ping {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: ping-ring 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+    animation-delay: var(--delay, 0s);
+  }
+  .anim-blink {
+    animation: blink 2.4s ease-in-out infinite;
+    animation-delay: var(--delay, 0s);
+  }
+  .anim-dash {
+    stroke-dasharray: 6 8;
+    animation: dash 1.6s linear infinite;
+  }
+  .anim-flag {
+    transform-box: fill-box;
+    transform-origin: 0% 50%;
+    animation: flag 2.6s ease-in-out infinite;
+  }
+  .anim-shimmer {
+    background-size: 200% 100%;
+    animation: shimmer 6s linear infinite;
+  }
+  .anim-travel {
+    animation: travel 2.4s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+    animation-delay: var(--delay, 0s);
+  }
+  .anim-marquee {
+    animation: marquee 38s linear infinite;
+  }
+  .anim-check-circle {
+    stroke-dasharray: 160;
+    stroke-dashoffset: 160;
+    animation: draw 0.7s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+  }
+  .anim-check-mark {
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    animation: draw 0.45s cubic-bezier(0.65, 0, 0.35, 1) 0.55s forwards;
+  }
+  .anim-pop {
+    animation: pop 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+}
+
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -10px, 0);
+  }
+}
+@keyframes drift {
+  from {
+    transform: translate3d(-140px, 0, 0);
+  }
+  to {
+    transform: translate3d(700px, 0, 0);
+  }
+}
+@keyframes sway {
+  0%,
+  100% {
+    transform: rotate(-1.6deg);
+  }
+  50% {
+    transform: rotate(1.6deg);
+  }
+}
+@keyframes bob {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -3px, 0);
+  }
+}
+@keyframes scan {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate3d(-150px, 40px, 0) rotate(-8deg);
+  }
+  50% {
+    transform: translate3d(-40px, 110px, 0) rotate(4deg);
+  }
+  75% {
+    transform: translate3d(-190px, 150px, 0) rotate(-4deg);
+  }
+}
+@keyframes pin {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  40% {
+    transform: translate3d(0, -7px, 0);
+  }
+  60% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes ping-ring {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+@keyframes dash {
+  to {
+    stroke-dashoffset: -28;
+  }
+}
+@keyframes flag {
+  0%,
+  100% {
+    transform: skewY(0deg) scaleX(1);
+  }
+  50% {
+    transform: skewY(-6deg) scaleX(0.92);
+  }
+}
+@keyframes shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+@keyframes travel {
+  0% {
+    transform: translate3d(4px, 0, 0);
+    opacity: 0;
+  }
+  15%,
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(100px, 0, 0);
+    opacity: 0;
+  }
+}
+@keyframes marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Respect users who prefer reduced motion: stop all non-essential animation */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+  .anim-drift,
+  .anim-scan,
+  .anim-marquee {
+    animation: none !important;
+  }
+  .anim-check-circle,
+  .anim-check-mark {
+    stroke-dashoffset: 0;
+  }
+}
